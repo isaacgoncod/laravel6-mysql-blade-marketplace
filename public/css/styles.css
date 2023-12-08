@@ -18,13 +18,14 @@ header{
 main{
     padding: 50px;
 }
-
 .row{
     margin: 0;
 }
 .container-fluid{
+    background-color: #f2f2f2;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     padding: 15px;
 }
 .container-fluid ul, li{
@@ -42,22 +43,11 @@ main{
     font-size: 1.5rem;
     font-weight: bold;
 }
-.btn-primary{
-    background-color: #f2a340;
-    border: 2px solid #c28008;
+.table{
+    border: 1px solid #ccc;
 }
-.btn-primary:hover{
-    background-color: #c28008;
-    border-color: #c28008;
-}
-
-.msg{
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-    margin-bottom: 0;
+.table th, .table td{
     text-align: center;
-    padding: 10px;
 }
 
 #navbar{
@@ -86,4 +76,11 @@ main{
     color: #fff;
     transition: .2s;
     cursor: pointer;
+}
+#btn-back{
+    background-color: #f2a340;
+}
+
+#btn-back:hover{
+    background-color: #c28008;
 }

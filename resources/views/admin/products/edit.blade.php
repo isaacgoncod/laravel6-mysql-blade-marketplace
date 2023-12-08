@@ -1,8 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Editar Produto</h1>
-    <form action="{{route('admin.products.update', ['product' => $product->id])}}" method="POST" id="form-create">
+     <div class="d-flex justify-content-between align-items-center">
+        <h1>Editar Produto</h1>
+        <div>
+            <button type="button" class="btn btn-success" id="btn-back" onclick="pageBackProducts()">
+                Voltar
+            </button>
+        </div>
+    </div>
+    <form action="{{route('admin.products.update', ['product' => $product->id])}}" method="POST" enctype="multipart/form-data" id="form-edit-product">
     @csrf
     @method('PUT')
         <div class="form-group">
@@ -19,16 +26,52 @@
         </div>
         <div class="form-group">
             <label for="price">Preço</label>
-            <input type="price" name="price" class="form-control" value="{{$product->price}}">
+            <input type="price" name="price" class="form-control" id="price" value="{{$product->price}}">
         </div>
         <div class="form-group">
-            <label for="slug">Slug</label>
-            <input type="text" name="slug" class="form-control" value="{{$product->slug}}">
+            <label for="categories[]">Categorias</label>
+            <select name="categories[]" id="categories" class="form-control @error('categories')
+                is-invalid
+            @enderror" multiple>
+                @foreach ($categories as $category )
+                    <option value="{{$category->id}}" @if($product->categories->contains($category)) selected @endif>{{$category->name}}
+                    </option>
+                @endforeach
+            </select>
+             @error('categories')
+                <div class="invalid-feedback">{{str_replace(['Categories', 'categories'], 'Categoria(s)',$message)}}</div>
+            @enderror
+        </div>
+
+         <div class="form-group">
+            <label for="images[]">Imagens</label>
+            <input type="file" name="images[]" class="form-control @error('images.*')
+                is-invalid
+            @enderror" multiple>
+
+            @error('images')
+                <div class="invalid-feedback">{{str_replace(['Images', 'images'], 'Imagens',$message)}}</div>
+            @enderror
         </div>
         <div>
-            <button type="submit" class="btn btn-lg btn-success">
-                Editar Produto
+            <button type="submit" class="btn btn-success">
+                Atualizar
             </button>
         </div>
     </form>
+
+    <hr>
+
+    <div class="row">
+        @foreach ($product->images as $image)
+            <div class="col-4 text-center">
+                <img src="{{asset('storage/'.$image->image)}}" alt="Product Images" class="img-fluid">
+                <form action="{{route('admin.image.remove', ['imageName' => $image->image])}}" method="POST">
+                @csrf
+                <input type="hidden" name="imageName" value="{{$image->image}}">
+                <button type="submit" class="btn btn-danger"><ion-icon name="trash-outline"></ion-icon></button>
+                </form>
+            </div>
+        @endforeach
+    </div>
 @endsection

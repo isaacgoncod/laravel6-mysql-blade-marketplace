@@ -10,6 +10,11 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js" integrity="sha512-KwKOj1sfIsT/2Gqam136/onXPaKsdoRKdJD92HnbpLHbafKVSVFIiBq5CUd1X9Pr2hZUG+3nvTVJoPcCwV6Pqg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/js/script.js"></script>
 
 </head>
@@ -19,7 +24,7 @@
                 <div class="collapse navbar-collapse" id="navbar">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a href="{{route('admin.stores.index')}}" class="navbar-brand nav-link">
+                            <a href="{{route('home')}}" class="navbar-brand nav-link">
                                 <img src="/images/logo-32.png" alt="Logo">
                             </a>
                         </li>
@@ -33,13 +38,16 @@
                         @if (Route::has('login'))
                             @auth
                             <li class="nav-item">
-                                <a href="{{ url('/') }}" class="nav-link">Home</a>
+                                <a href="{{ route('home') }}" class="nav-link">Home</a>
                             </li>
                             <li class="nav-item @if(request()->is('admin/stores*')) active @endif">
                                 <a href="{{route('admin.stores.index')}}" class="nav-link">Lojas</a>
                             </li>
                             <li class="nav-item @if(request()->is('admin/products*')) active @endif">
                                 <a href="{{route('admin.products.index')}}" class="nav-link">Produtos</a>
+                            </li>
+                            <li class="nav-item @if(request()->is('admin/categories*')) active @endif">
+                                <a href="{{route('admin.categories.index')}}" class="nav-link">Categorias</a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link" onclick="event.preventDefault();document.querySelector('form.logout').submit();">Sair</a>
@@ -68,7 +76,5 @@
             @yield('content')
         </div>
     </main>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 </html>

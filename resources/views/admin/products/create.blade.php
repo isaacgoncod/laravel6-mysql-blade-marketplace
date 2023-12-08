@@ -1,8 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Novo Produto</h1>
-    <form action="{{route('admin.products.store')}}" method="POST" id="form-create">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Novo Produto</h1>
+        <div>
+            <button type="button" class="btn btn-success" id="btn-back" onclick="pageBackProducts()">
+                Voltar
+            </button>
+        </div>
+    </div>
+    <form action="{{route('admin.products.store')}}" method="POST" enctype="multipart/form-data" id="form-create-product">
     @csrf
         <div class="form-group">
             <label for="name">Produto</label>
@@ -36,8 +43,7 @@
         </div>
         <div class="form-group">
             <label for="price">Preço</label>
-            <input type="price" name="price" class="form-control @error('price')is-invalid @enderror" value="{{old('price')}}">
-
+            <input type="price" name="price" id="price" class="form-control @error('price')is-invalid @enderror" value="{{old('price')}}">
 
             @error('price')
                 <div class="invalid-feedback">
@@ -46,13 +52,37 @@
             @enderror
         </div>
         <div class="form-group">
-            <label for="slug">Slug</label>
-            <input type="text" name="slug" class="form-control" >
+            <label for="categories[]">Categorias</label>
+            <select name="categories[]" id="categories" class="form-control @error('categories')
+                is-invalid
+            @enderror" multiple>
+                @foreach ($categories as $category )
+                    <option value="{{$category->id}}">{{$category->name}}</option>
+                @endforeach
+            </select>
+              @error('categories')
+                <div class="invalid-feedback">{{str_replace(['Categories', 'categories'], 'Categoria',$message)}}</div>
+            @enderror
         </div>
-        <div>
-            <button type="submit" class="btn btn-lg btn-success">
-                Novo Produto
+
+        <div class="form-group">
+            <label for="images[]">Imagens</label>
+            <input type="file" name="images[]" class="form-control @error('images.*')
+            is-invalid
+            @enderror" multiple>
+
+            @error('images')
+                <div class="invalid-feedback">{{str_replace(['Images', 'Images'], 'Imagens', $message)}}</div>
+            @enderror
+        </div>
+        <div class="d-flex justify-content-between align-items-center mt-5">
+            <button type="submit" class="btn btn-success">
+                Incluir
+            </button>
+            <button type="button" class="btn btn-success" id="btn-back" onclick="pageBackProducts()">
+                Voltar
             </button>
         </div>
     </form>
 @endsection
+

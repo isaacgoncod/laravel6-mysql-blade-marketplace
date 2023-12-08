@@ -1,8 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Criar Loja</h1>
-    <form action="{{route('admin.stores.store')}}" method="POST" id="form-create">
+     <div class="d-flex justify-content-between align-items-center">
+        <h1>Nova Loja</h1>
+        <div>
+            <button type="button" class="btn btn-success" id="btn-back" onclick="pageBackStores()">
+                Voltar
+            </button>
+        </div>
+    </div>
+    <form action="{{route('admin.stores.store')}}" method="POST" enctype="multipart/form-data" id="form-create-store">
     @csrf
         <div class="form-group">
             <label for="name">Nome</label>
@@ -26,7 +33,7 @@
         </div>
         <div class="form-group">
             <label for="phone">Telefone</label>
-            <input type="text" name="phone" class="form-control @error('phone')is-invalid @enderror" value="{{old('phone')}}">
+            <input type="text" name="phone" id="phone" class="form-control @error('phone')is-invalid @enderror" value="{{old('phone')}}">
 
             @error('phone')
                 <div class="invalid-feedback">
@@ -36,7 +43,7 @@
         </div>
         <div class="form-group">
             <label for="mobile_phone">Celular</label>
-            <input type="text" name="mobile_phone" class="form-control @error('mobile_phone')is-invalid @enderror" value="{{old('mobile_phone')}}">
+            <input type="text" name="mobile_phone" id="mobile_phone" class="form-control @error('mobile_phone')is-invalid @enderror" value="{{old('mobile_phone')}}">
 
             @error('mobile_phone')
                 <div class="invalid-feedback">
@@ -44,36 +51,37 @@
                 </div>
             @enderror
         </div>
+          <div class="form-group">
+            <label for="logo">Imagem</label>
+            <input type="file" name="logo" class="form-control @error('logo')
+                is-invalid
+            @enderror">
+
+             @error('logo')
+                <div class="invalid-feedback">{{str_replace(['logo', 'Logo'], 'Imagem', $message)}}</div>
+            @enderror
+        </div>
         <div class="form-group">
             <label for="slug">Slug</label>
             <input type="text" name="slug" class="form-control">
         </div>
-        {{-- <div class="form-group">
-            <label for="user">Usuário</label>
-            <select name="user" id="user" class="form-control" required>
-                <option value="0">Selecione...</option>
-                @foreach ($users as $user)
-                    <option value="{{$user->id}}">{{$user->name}}</option>
-                @endforeach
-            </select>
-        </div> --}}
-        <div>
-            <button type="submit" class="btn btn-lg btn-success">
-                Criar Loja
+        <div class="d-flex justify-content-between align-items-center mt-5">
+            <button type="submit" class="btn btn-success">
+                Incluir
+            </button>
+            <button type="button" class="btn btn-success" id="btn-back" onclick="pageBackStores()">
+                Voltar
             </button>
         </div>
     </form>
-     {{-- <script>
-        document.addEventListener("DOMContentLoaded",       function () {
-            var form = document.getElementById("form-create");
-            var user = document.getElementById("user");
-
-            form.addEventListener("submit", function (event) {
-                if(user.value == 0){
-                    alert('Selecione um usuário!');
-                    event.preventDefault();
-                }
-            });
+    <script>
+        $(document).ready(function(){
+             $('#phone').mask('(00) 0000-0000');
+             $('#mobile_phone').mask('(00) 00000-0000');
         });
-    </script> --}}
+        $('#form-create-store').submit(function(event) {
+                $('#phone').unmask();
+                $('#mobile_phone').unmask();
+        });
+    </script>
 @endsection

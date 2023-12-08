@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Category;
 use App\Store;
 use App\Product;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Traits\UploadTrait;
 
 class ProductController extends Controller
 {
+
+    use UploadTrait;
+
     private $product;
 
     public function __construct(Product $product)
@@ -23,9 +28,14 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = $this->product->paginate(10);
+        $products = '';
+        $userStore = auth()->user()->store;
 
-        return view('admin.products.index', compact('products'));
+        if($userStore){
+            $products = $userStore->products()->paginate(10);
+        }
+
+        return view('admin.products.index', compact(['products', 'userStore']));
     }
 
     /**
@@ -35,9 +45,17 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $stores = Store::all(['id', 'name']);
+        $userStore = auth()->user()->store;
 
-        return view('admin.products.create', compact('stores'));
+        if(!$userStore){
+            flash('Você não possui Loja cadastrada!')->warning();
+
+            return redirect()->route('admin.products.index');
+        }
+
+        $categories = Category::all(['id', 'name']);
+
+        return view('admin.products.create', compact('categories'));
     }
 
     /**
@@ -49,13 +67,21 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $data = $request->all();
+        $categories = $request->get('categories', null);
 
-        $store = Store::find($data['store']);
-        $store->products()->create($data);
+        $store = auth()->user()->store;
+        $product = $store->products()->create($data);
+        $product->categories()->sync($categories);
+
+        if($request->hasFile('images')){
+            $images = $this->imageUpload($request->file('images'), 'image');
+
+            $product->images()->createMany($images);
+        }
 
         flash('Produto Criado com Sucesso!')->success();
 
-        return redirect()->route('admin.products.index');
+        return redirect()->route('admin.products.edit', ['product' => $product->id]);
     }
 
     /**
@@ -79,7 +105,9 @@ class ProductController extends Controller
     {
         $product = $this->product->findOrFail($product);
 
-        return view('admin.products.edit', compact('product'));
+        $categories = Category::all(['id', 'name']);
+
+        return view('admin.products.edit', compact(['product', 'categories']));
     }
 
     /**
@@ -92,13 +120,24 @@ class ProductController extends Controller
     public function update(ProductRequest $request, $product)
     {
         $data = $request->all();
+        $categories = $request->get('categories', null);
 
         $product = $this->product->find($product);
         $product->update($data);
 
-         flash('Produto Atualizado com Sucesso!')->success();
+        if(!is_null($categories)){
+            $product->categories()->sync($categories);
+        }
 
-        return redirect()->route('admin.products.index');
+         if($request->hasFile('images')){
+            $images = $this->imageUpload($request->file('images'), 'image');
+
+            $product->images()->createMany($images);
+        }
+
+        flash('Produto Atualizado com Sucesso!')->success();
+
+        return redirect()->route('admin.products.edit', ['product' => $product->id]);
     }
 
     /**
@@ -111,10 +150,17 @@ class ProductController extends Controller
     {
         $product = $this->product::find($product);
 
+        $validProduct = $product->categories()->count();
+        if($validProduct){
+            flash('Você possui Categoria(s) relacionada(s) a este Produto!')->warning();
+            return redirect()->route('admin.products.index');
+        }
+
+
         $product->delete();
 
         flash('Produto Removido com Sucesso!')->success();
 
-        return redirect()->route('admin.products.index');
+        return redirect()->back();
     }
 }
