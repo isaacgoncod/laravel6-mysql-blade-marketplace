@@ -79,9 +79,5 @@
              $('#phone').mask('(00) 0000-0000');
              $('#mobile_phone').mask('(00) 00000-0000');
         });
-        $('#form-create-store').submit(function(event) {
-                $('#phone').unmask();
-                $('#mobile_phone').unmask();
-        });
     </script>
 @endsection

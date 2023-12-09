@@ -31,10 +31,6 @@
                 </div>
             @enderror
         </div>
-        <div class="form-group">
-            <label for="slug">Slug</label>
-            <input type="text" name="slug" class="form-control" >
-        </div>
         <div class="d-flex justify-content-between align-items-center mt-5">
             <button type="submit" class="btn btn-success">
                 Incluir

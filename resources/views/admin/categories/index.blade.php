@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid bg-light p-3 rounded-top">
     <ul>
         <li><a href="{{route('admin.categories.create')}}" class="btn btn-success">Novo</a></li>
         <li id="table-title">Consulta de Categorias</li>

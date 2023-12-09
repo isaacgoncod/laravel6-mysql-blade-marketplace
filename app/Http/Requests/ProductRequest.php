@@ -25,9 +25,9 @@ class ProductRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'description' => 'required|min:10',
+            'description' => 'required|min:10|max:255',
             'body' => 'required|min:10',
-            'price' => 'required',
+            'price' => 'required|max:10',
             'categories' => 'required|array|min:1',
             'categories.*' => 'numeric',
             'images.*' => 'image'
@@ -37,7 +37,9 @@ class ProductRequest extends FormRequest
     public function messages()
     {
         return [
-            'min' => 'Campo :attribute deve ter :min caractéres!'
+            'min' => 'Campo :attribute deve ter :min caractéres!',
+            'max' => 'Campo :attribute tem mais que :max caractéres!',
+            'numeric' => 'Campo :attribute deve ser um número!'
         ];
     }
 }

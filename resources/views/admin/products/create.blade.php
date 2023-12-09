@@ -43,7 +43,7 @@
         </div>
         <div class="form-group">
             <label for="price">Preço</label>
-            <input type="price" name="price" id="price" class="form-control @error('price')is-invalid @enderror" value="{{old('price')}}">
+            <input type="price" name="price" id="price" class="form-control @error('price')is-invalid @enderror col-3" value="{{old('price')}}">
 
             @error('price')
                 <div class="invalid-feedback">
@@ -55,7 +55,7 @@
             <label for="categories[]">Categorias</label>
             <select name="categories[]" id="categories" class="form-control @error('categories')
                 is-invalid
-            @enderror" multiple>
+            @enderror col-3" multiple>
                 @foreach ($categories as $category )
                     <option value="{{$category->id}}">{{$category->name}}</option>
                 @endforeach
@@ -69,7 +69,7 @@
             <label for="images[]">Imagens</label>
             <input type="file" name="images[]" class="form-control @error('images.*')
             is-invalid
-            @enderror" multiple>
+            @enderror col-6" multiple>
 
             @error('images')
                 <div class="invalid-feedback">{{str_replace(['Images', 'Images'], 'Imagens', $message)}}</div>
@@ -84,5 +84,10 @@
             </button>
         </div>
     </form>
+    <script>
+        $(document).ready(function(){
+            $('#price').mask('000.000,00', {reverse: true});
+        });
+    </script>
 @endsection
 

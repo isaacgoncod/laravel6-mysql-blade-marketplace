@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid bg-light p-3 rounded-top">
     <ul>
+        @if (!$store)
             <li><a href="{{route('admin.stores.create')}}" class="btn btn-success">Novo</a></li>
+        @endif
         <li id="table-title">Consulta de Loja</li>
         <li id="table-date">{{date('d/m/Y')}}</li>
     </ul>

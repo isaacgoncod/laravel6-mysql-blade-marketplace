@@ -1,0 +1,9 @@
+<p>No vídeo eu esqueci de modificar a chamada da validação na parte do @error para a mensagem abaixo do input files. </p><p><br></p><p>De qualquer forma segue o input file completo para você aplicar no create e no edit, para que suas mensagens de validação possam ser exibidas corretamente:</p><p><br></p><pre class="prettyprint linenums">&lt;div class="form-group"&gt;
+  &lt;label&gt;Fotos do Produto&lt;/label&gt;
+  &lt;input type="file" name="photos[]" class="form-control @error('photos.*') is-invalid @enderror" multiple&gt;
+  @error('photos.*')
+     &lt;div class="invalid-feedback"&gt;
+       {&zwnj;{$message}}
+      &lt;/div&gt;
+   @enderror
+&lt;/div&gt;</pre><p><br></p>

@@ -18,15 +18,11 @@ header{
 main{
     padding: 50px;
 }
-.row{
-    margin: 0;
+.row.front{
+    margin: 40px;
 }
 .container-fluid{
-    background-color: #f2f2f2;
     border: 1px solid #ccc;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    padding: 15px;
 }
 .container-fluid ul, li{
     margin: 0;
@@ -77,10 +73,30 @@ main{
     transition: .2s;
     cursor: pointer;
 }
+.nav-item{
+    display: flex;
+    align-items: center;
+}
 #btn-back{
     background-color: #f2a340;
 }
 
 #btn-back:hover{
     background-color: #c28008;
+}
+#card-product-img img{
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+#card-product-img button{
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}
+ .background-number {
+    padding: 3px 9px;
+    background-color: #f2a340;
+    border: 1px solid #c28008;
+    border-radius: 50%;
+    color: #fff;
 }

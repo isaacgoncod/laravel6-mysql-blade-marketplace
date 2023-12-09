@@ -5,6 +5,7 @@ namespace App;
 use App\Store;
 use App\Category;
 use App\ProductsImages;
+use Faker\Core\Number;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -35,5 +36,15 @@ class Product extends Model
     public function images()
     {
         return $this->hasMany(ProductsImages::class);
+    }
+
+    public function setPriceAttribute($value)
+    {
+        $this->attributes['price'] = (float) str_replace(['.', ','], ['', '.'], $value);
+    }
+
+    public function getPriceAttribute($value)
+    {
+        return number_format($value, 2, ',', '.');
     }
 }

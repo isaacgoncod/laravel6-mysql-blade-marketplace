@@ -26,13 +26,19 @@
         </div>
         <div class="form-group">
             <label for="price">Preço</label>
-            <input type="price" name="price" class="form-control" id="price" value="{{$product->price}}">
+            <input type="price" name="price" class="form-control  @error('price')
+                is-invalid
+            @enderror col-3" id="price" value="{{$product->price}}">
+
+            @error('price')
+                <div class="invalid-feedback">{{str_replace(['Price', 'price'], 'Preço',$message)}}</div>
+            @enderror
         </div>
         <div class="form-group">
             <label for="categories[]">Categorias</label>
             <select name="categories[]" id="categories" class="form-control @error('categories')
                 is-invalid
-            @enderror" multiple>
+            @enderror col-3" multiple>
                 @foreach ($categories as $category )
                     <option value="{{$category->id}}" @if($product->categories->contains($category)) selected @endif>{{$category->name}}
                     </option>
@@ -47,7 +53,7 @@
             <label for="images[]">Imagens</label>
             <input type="file" name="images[]" class="form-control @error('images.*')
                 is-invalid
-            @enderror" multiple>
+            @enderror col-5" multiple>
 
             @error('images')
                 <div class="invalid-feedback">{{str_replace(['Images', 'images'], 'Imagens',$message)}}</div>
@@ -62,16 +68,25 @@
 
     <hr>
 
-    <div class="row">
+    <div class="container">
+        <h1>Imagens:</h1>
+    </div>
+
+    <div class="row" id="card-product-img">
         @foreach ($product->images as $image)
             <div class="col-4 text-center">
                 <img src="{{asset('storage/'.$image->image)}}" alt="Product Images" class="img-fluid">
                 <form action="{{route('admin.image.remove', ['imageName' => $image->image])}}" method="POST">
                 @csrf
                 <input type="hidden" name="imageName" value="{{$image->image}}">
-                <button type="submit" class="btn btn-danger"><ion-icon name="trash-outline"></ion-icon></button>
+                <button type="submit" class="btn btn-danger col"><ion-icon name="trash-outline"></ion-icon></button>
                 </form>
             </div>
         @endforeach
     </div>
+    <script>
+        $(document).ready(function(){
+            $('#price').mask('000.000,00', {reverse: true});
+        });
+    </script>
 @endsection

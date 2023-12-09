@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container-fluid">
+    <div class="container-fluid bg-light p-3 rounded-top">
         <ul>
             <li><a href="{{route('admin.products.create')}}" class="btn btn-success">Novo</a></li>
             <li id="table-title">Consulta de Produtos</li>
@@ -33,7 +33,7 @@
                         </td>
                         <td>{{$product->id}}</td>
                         <td>{{$product->name}}</td>
-                        <td>R$ {{number_format($product->price, 2, ',', '.')}}</td>
+                        <td>R$ {{$product->price}}</td>
                         <td>{{$product->store->name}}</td>
                     </tr>
                 @endforeach
