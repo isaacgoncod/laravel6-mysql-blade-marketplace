@@ -2,9 +2,10 @@
 
 namespace App;
 
+use App\UserOrder;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -40,5 +41,10 @@ class User extends Authenticatable
     public function store()
     {
         return $this->hasOne(Store::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(UserOrder::class);
     }
 }

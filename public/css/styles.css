@@ -93,10 +93,4 @@ main{
     border-top-right-radius: 0;
     border-top-left-radius: 0;
 }
- .background-number {
-    padding: 3px 9px;
-    background-color: #f2a340;
-    border: 1px solid #c28008;
-    border-radius: 50%;
-    color: #fff;
-}
+

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -13,10 +14,29 @@ class CartController extends Controller
     }
     public function add(Request $request)
     {
-        $product = $request->get('product');
+        $productData = $request->get('product');
+
+        $product = Product::whereSlug($productData['slug']);
+
+        if(!$product->count() || $productData['amount'] == 0){
+            return redirect()->route('product.single', ['slug' => $productData['slug']]);
+        }
+
+        $product = array_merge($productData, $product->first(['name', 'price'])->toArray());
 
         if(session()->has('cart')){
-            session()->push('cart', $product);
+
+            $products = session()->get('cart');
+            $productsSlugs = array_column($products, 'slug');
+
+            if(in_array($product['slug'], $productsSlugs)){
+                $products = $this->productIncrement($product['slug'], $product['amount'], $products);
+
+                session()->put('cart', $products);
+            }else{
+                session()->push('cart', $product);
+            }
+
         }else{
             $products[] = $product;
 
@@ -60,9 +80,15 @@ class CartController extends Controller
         return (float) str_replace(['.', ','], ['', '.'], $value);;
     }
 
-    public function getCartAmountAttribute()
-    {
-        $cart = session()->has('cart') ? session()->get('cart') : [];
-        return count($cart);
+    private function productIncrement($slug,$amount, $products){
+        $products = array_map(function($line) use($slug, $amount){
+            if($slug == $line['slug']){
+                $line['amount'] += $amount;
+            }
+
+            return $line;
+        }, $products);
+
+        return $products;
     }
 }

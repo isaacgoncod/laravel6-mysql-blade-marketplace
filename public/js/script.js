@@ -1,3 +1,7 @@
+ $(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});
+
  function pageBackProducts() {
         window.location.href = '/admin/products';
 }
@@ -7,3 +11,4 @@
  function pageBackCategories() {
         window.location.href = '/admin/categories';
 }
+

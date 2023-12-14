@@ -38,13 +38,13 @@ class Product extends Model
         return $this->hasMany(ProductsImages::class);
     }
 
-    public function setPriceAttribute($value)
-    {
-        $this->attributes['price'] = (float) str_replace(['.', ','], ['', '.'], $value);
-    }
+    // public function setPriceAttribute($value)
+    // {
+    //     $this->attributes['price'] = (float) str_replace(['.', ','], ['', '.'], $value);
+    // }
 
-    public function getPriceAttribute($value)
-    {
-        return number_format($value, 2, ',', '.');
-    }
+    // public function getPriceAttribute($value)
+    // {
+    //     return number_format($value, 2, ',', '.');
+    // }
 }

@@ -1,8 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -22,6 +25,7 @@ use App\Http\Controllers\Admin\ProductImageController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+Auth::routes();
 
 Route::group(['middleware' => ['auth']], function(){
     Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
@@ -52,13 +56,25 @@ Route::group(['middleware' => ['auth']], function(){
     });
 });
 
-Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/product/{slug}', 'HomeController@single')->name('product.single');
+
+Route::get('/category/{slug}', 'CategoryController@index')->name('category.single');
+Route::get('/store/{slug}', 'StoreController@index')->name('store.single');
+
 Route::prefix('cart')->name('cart.')->group(function(){
     Route::get('/', 'CartController@index')->name('index');
     Route::post('add', 'CartController@add')->name('add');
     Route::get('remove/{slug}', 'CartController@remove')->name('remove');
     Route::get('cancel', 'CartController@cancel')->name('cancel');
 });
+
+Route::prefix('checkout')->name('checkout.')->group(function(){
+    Route::get('/', 'CheckoutController@index')->name('index');
+    Route::get('/installments/{amount?}/{brand?}', 'CheckoutController@installments')->name('installments');
+    Route::get('/thanks', 'CheckoutController@thanks')->name('thanks');
+    Route::post('/proccess', 'CheckoutController@proccess')->name('proccess');
+});
+
+

@@ -34,9 +34,9 @@
                     <div class="form-group">
                         <label for="product[amount]">Quantidade</label>
                         <input type="number"
-                        name="product[amount]" class="form-control col-md-2" value="1">
+                        name="product[amount]" class="form-control col-md-2" value="1" min="1">
                     </div>
-                    <button class="btn btn-lg btn-danger">Comprar</button>
+                    <button class="btn btn-lg btn-danger d-flex align-items-center" title="Adicionar ao Carrinho"><ion-icon name="cart-outline" style="font-size: 20px;"></ion-icon><ion-icon name="add-circle-outline"></ion-icon></button>
                 </form>
             </div>
             </div>

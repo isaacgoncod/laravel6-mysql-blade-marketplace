@@ -29,8 +29,8 @@
                             <td>{{$c['price']}}</td>
                             <td>{{$c['amount']}}</td>
                             @php
-                                $subtotal = ( app('App\Http\Controllers\CartController')->getCartPriceAttribute($c['price']) * $c['amount']);
-
+                                // $subtotal = ( app('App\Http\Controllers\CartController')->getCartPriceAttribute($c['price']) * $c['amount']);
+                                $subtotal = (($c['price']) * $c['amount']);
                                 $total += $subtotal;
                             @endphp
                             <td>R$ {{number_format($subtotal, 2, ',', '.')}}</td>
@@ -49,7 +49,7 @@
             <hr>
             <div class="col-md-12">
                 <a href="{{route('cart.cancel')}}" class="btn btn-lg btn-danger float-left d-flex align-items-center"><ion-icon name="trash-outline"></ion-icon></a>
-                <a href="" class="btn btn-lg btn-success float-right d-flex align-items-center"><ion-icon name="chevron-forward-outline"></ion-icon></a>
+                <a href="{{route('checkout.index')}}" class="btn btn-lg btn-success float-right d-flex align-items-center"><ion-icon name="chevron-forward-outline"></ion-icon></a>
             </div>
             @else
                 <div class="alert alert-warning text-align-center">Carrinho vazio :(</div>

@@ -10,6 +10,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
+    @yield('stylesheets')
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -24,9 +25,9 @@
             <nav class="navbar navbar-expand-lg navbar-light">
                 <div class="collapse navbar-collapse" id="navbar">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
+                        <li class="nav-item>
                             <a href="{{route('home')}}" class="navbar-brand nav-link">
-                                <img src="/images/logo-32.png" alt="Logo">
+                                <img src="/images/logo-32.png" alt="Logo" title="Home">
                             </a>
                         </li>
                         @auth
@@ -34,40 +35,51 @@
                                 <span class="nav-link">Bem Vindo! {{auth()->user()->name}}</span>
                             </li>
                         @endauth
+
+                        @foreach ($categories as $category)
+                            <li class="nav-item @if(request()->is('category/' . $category->slug)) active @endif">
+                                <a class="nav-link" href="{{route('category.single', ['slug' => $category->slug])}}">{{$category->name}}</a>
+                            </li>
+                        @endforeach
                     </ul>
                     <ul class="navbar-nav">
-                        @auth
-                            <li class="nav-item">
-                                <a href="{{ route('cart.index') }}" class="nav-link btn btn-danger text-white d-flex align-items-center justify-content-between"> <ion-icon name="cart-outline" style="font-size: 1.5rem;"></ion-icon>
-                                <span class="background-number">{{app('App\Http\Controllers\CartController')->getCartAmountAttribute()}}</span></a>
+                        @if (session()->has('cart'))
+                            <li class="nav-item" title="Carrinho">
+                                <a href="{{ route('cart.index') }}" class="nav-link btn btn-danger text-white d-flex align-items-center"> <ion-icon name="cart-outline" style="font-size: 20px;"></ion-icon>
+                                <span class="badge badge-warning text-white">{{count(session()->get('cart'))}}</span></a>
                             </li>
-                        @endauth
-                        <li class="nav-item">
+                        @else
+                            <li class="nav-item" title="Carrinho">
+                                <a href="{{ route('cart.index') }}" class="nav-link btn btn-danger text-white d-flex align-items-center"> <ion-icon name="cart-outline" style="font-size: 20px;"></ion-icon></a>
+                            </li>
+                        @endif
+
+                        <li class="nav-item"  title="Home">
                             <a href="{{ route('home') }}" class="nav-link">Home</a>
                         </li>
                         @if (Route::has('login'))
                             @auth
-                            <li class="nav-item @if(request()->is('admin/stores*')) active @endif">
+                            <li class="nav-item @if(request()->is('admin/stores*')) active @endif"  title="Consulta de Lojas">
                                 <a href="{{route('admin.stores.index')}}" class="nav-link">Lojas</a>
                             </li>
-                            <li class="nav-item @if(request()->is('admin/products*')) active @endif">
+                            <li class="nav-item @if(request()->is('admin/products*')) active @endif" title="Consulta de Produtos">
                                 <a href="{{route('admin.products.index')}}" class="nav-link">Produtos</a>
                             </li>
-                            <li class="nav-item @if(request()->is('admin/categories*')) active @endif">
+                            <li class="nav-item @if(request()->is('admin/categories*')) active @endif" title="Consulta de Categorias">
                                 <a href="{{route('admin.categories.index')}}" class="nav-link">Categorias</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item" title="Sair da Sessão">
                                 <a href="#" class="nav-link" onclick="event.preventDefault();document.querySelector('form.logout').submit();">Sair</a>
                                 <form action="{{route('logout')}}" class="logout" method="POST">
                                 @csrf
                                 </form>
                             </li>
                         @else
-                            <li class="nav-item">
+                            <li class="nav-item" title="Login">
                                 <a href="{{ route('login') }}" class="nav-link">Login</a>
                             </li>
                             @if (Route::has('register'))
-                                <li class="nav-item">
+                                <li class="nav-item" title="Registro">
                                     <a href="{{ route('register') }}" class="nav-link">Registro</a>
                                 </li>
                             @endif
@@ -78,10 +90,11 @@
             </nav>
         </header>
     <main>
-        <div class="container"> 
+        <div class="container">
             @include('flash::message')
             @yield('content')
         </div>
     </main>
+    @yield('scripts')
 </body>
 </html>

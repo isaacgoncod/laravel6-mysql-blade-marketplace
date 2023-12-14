@@ -2,9 +2,11 @@
 
 namespace App;
 
+use App\UserOrder;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
+
 class Store extends Model
 {
     use HasSlug;
@@ -25,5 +27,10 @@ class Store extends Model
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+     public function orders()
+    {
+        return $this->hasMany(UserOrder::class);
     }
 }
